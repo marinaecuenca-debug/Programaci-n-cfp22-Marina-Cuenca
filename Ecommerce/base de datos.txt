@@ -1,0 +1,44 @@
+-- Eliminar la base de datos si ya existe
+DROP DATABASE IF EXISTS ecommerce_db;
+
+-- Crear la base de datos
+CREATE DATABASE ecommerce_db;
+USE ecommerce_db;
+
+-- Crear tabla usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) UNIQUE NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    admin BOOLEAN DEFAULT FALSE
+);
+
+-- Crear tabla productos
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50),
+    stock INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL
+);
+
+-- Crear tabla carrito
+CREATE TABLE carrito (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+);
+
+-- Insertar usuario administrador
+INSERT INTO usuarios (nombre, contraseña, admin) VALUES
+('admin', 'admin123', TRUE);
+
+-- Insertar productos iniciales
+INSERT INTO productos (nombre, categoria, stock, precio) VALUES
+('Dulce de Leche', 'Lacteo', 10, 5500.00),
+('Coca', 'Gaseosa', 25, 3500.00),
+('Fernet', 'Bebida', 30, 12000.00),
+('Pan', 'Alimentos', 15, 2500.00);
